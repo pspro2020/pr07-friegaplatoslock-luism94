@@ -9,13 +9,12 @@ public class Fregador implements Runnable {
 
 	private final int MIN_DURACION = 4;
 	// Objeto cerrojo recibido por parametro del constructor
-	private Pila pila_uno, pila_dos;
+	private Pila pila;
 	// Formato de hora recibido por parametro del constructor
 	private DateTimeFormatter formatoHora;
 
-	public Fregador(Pila pila_uno, Pila pila_dos, DateTimeFormatter formatoHora) {
-		this.pila_uno = pila_uno;
-		this.pila_dos = pila_dos;
+	public Fregador(Pila pila, DateTimeFormatter formatoHora) {
+		this.pila = pila;
 		this.formatoHora = formatoHora;
 	}
 
@@ -26,7 +25,7 @@ public class Fregador implements Runnable {
 		while (!Thread.currentThread().isInterrupted()) {
 			try {
 				// El hilo coge un plato de la bandeja de platos sucios
-				plato = pila_uno.cogerPlato();
+				plato = pila.cogerPlatoSucio();
 			} catch (InterruptedException e) {
 				System.out.printf("Hora %s: Se ha interrumpido a %s mientras cogia un plato......\n",
 						LocalDateTime.now().format(formatoHora).toString(), Thread.currentThread().getName());
@@ -45,7 +44,7 @@ public class Fregador implements Runnable {
 			try {
 				// El hilo coloca el plato en la bandeja de platos limpios para el siguiente
 				// hilo
-				pila_dos.dejarPlato(plato);
+				pila.dejarPlatoLimpio(plato);
 			} catch (InterruptedException e) {
 				System.out.printf("Hora %s: Se ha interrumpido a %s mientras colocaba un plato......\n",
 						LocalDateTime.now().format(formatoHora).toString(), Thread.currentThread().getName());

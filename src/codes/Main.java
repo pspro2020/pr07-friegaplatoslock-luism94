@@ -13,20 +13,14 @@ public class Main {
 
 	public static void main(String[] args) {
 		//Objetos cerrojo comun a los hilos
-		Pila sucios = new Pila(formatoHora);//Solo para el fregador
-		Pila limpios = new Pila(formatoHora);//Para el fregador y el secador
-		Pila secos = new Pila(formatoHora);//Para el secador y el organizador
-		Pila alacena = new Pila(formatoHora);//Solo para el organizador
+		Pila pila = new Pila(formatoHora);
+
 		//Hilos secundarios declarados con nombre
-		Thread fregador = new Thread(new Fregador(sucios, limpios, formatoHora), "Fregador");
-		Thread secador = new Thread(new Secador(limpios, secos, formatoHora), "Secador");
-		Thread organizador = new Thread(new Organizador(secos, alacena, formatoHora), "Organizador");
+		Thread fregador = new Thread(new Fregador(pila, formatoHora), "Fregador");
+		Thread secador = new Thread(new Secador(pila, formatoHora), "Secador");
+		Thread organizador = new Thread(new Organizador(pila, formatoHora), "Organizador");
 		//Array de hilos secundarios
 		Thread[] hilos = {fregador, secador, organizador};
-		//Relleno la pila de platos sucios
-		for (int i = 0; i < LIMITE; i++) {
-			sucios.getPila().add(new Plato(i));
-		}
 		
 		//Se inician los hilos
 		for (int i = 0; i < MAX_HILOS; i++) {

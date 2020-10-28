@@ -11,11 +11,10 @@ public class Secador implements Runnable {
 	// Formato de hora recibido por parametro del constructor
 	private DateTimeFormatter formatoHora;
 	// Objeto cerrojo recibido por parametro del constructor
-	private Pila pila_uno, pila_dos;
+	private Pila pila;
 
-	public Secador(Pila pila_uno, Pila pila_dos, DateTimeFormatter formatoHora) {
-		this.pila_uno = pila_uno;
-		this.pila_dos = pila_dos;
+	public Secador(Pila pila, DateTimeFormatter formatoHora) {
+		this.pila = pila;
 		this.formatoHora = formatoHora;
 	}
 
@@ -26,7 +25,7 @@ public class Secador implements Runnable {
 		while (!Thread.currentThread().isInterrupted()) {
 			try {
 				// El hilo coge un plato de la bandeja de platos limpios
-				plato = pila_uno.cogerPlato();
+				plato = pila.cogerPlatoLimpio();
 			} catch (InterruptedException e) {
 				System.out.printf("Hora %s: Se ha interrumpido a %s mientras cogia un plato......\n",
 						LocalDateTime.now().format(formatoHora).toString(), Thread.currentThread().getName());
@@ -44,7 +43,7 @@ public class Secador implements Runnable {
 
 			try {
 				// El hilo coloca el plato seco en la bandeja de platos secos
-				pila_dos.dejarPlato(plato);
+				pila.dejarPlatoSeco(plato);
 			} catch (InterruptedException e) {
 				System.out.printf("Hora %s: Se ha interrumpido a %s mientras colocaba un plato......\n",
 						LocalDateTime.now().format(formatoHora).toString(), Thread.currentThread().getName());

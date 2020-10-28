@@ -7,13 +7,12 @@ public class Organizador implements Runnable {
 
 	private int MIN_DURACION = 1;
 	// Objeto cerrojo recibido por parametro del constructor
-	private Pila pila, alacena;
+	private Pila pila;
 	// Formato de hora recibido por parametro del constructor
 	private DateTimeFormatter formatoHora;
 
-	public Organizador(Pila pila, Pila alacena, DateTimeFormatter formatoHora) {
+	public Organizador(Pila pila, DateTimeFormatter formatoHora) {
 		this.pila = pila;
-		this.alacena = alacena;
 		this.formatoHora = formatoHora;
 	}
 
@@ -24,7 +23,7 @@ public class Organizador implements Runnable {
 		while (!Thread.currentThread().isInterrupted()) {
 			try {
 				// El hilo coge un plato de la bandeja de platos secos
-				plato = pila.cogerPlato();
+				plato = pila.cogerPlatoSeco();
 			} catch (InterruptedException e) {
 				System.out.printf("Hora %s: Se ha interrumpido al Organizador mientras cogia un plato......\n",
 						LocalDateTime.now().format(formatoHora).toString());
@@ -33,7 +32,7 @@ public class Organizador implements Runnable {
 
 			try {
 				// El hilo coloca el plato en la alacena de platos
-				alacena.dejarPlato(plato);
+				pila.dejarPlatoAlacena(plato);
 			} catch (InterruptedException e) {
 				System.out.printf("Hora %s: Se ha interrumpido al Organizador mientras colocaba un plato......\n",
 						LocalDateTime.now().format(formatoHora).toString());
