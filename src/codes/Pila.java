@@ -39,7 +39,7 @@ public class Pila {
 			//Se muestra un mensaje por pantalla
 			System.out.printf("Hora %s: %s ha recogido el plato #%d de la pila......\n", LocalDateTime.now().format(formatoHora).toString(), Thread.currentThread().getName(), plato.getNumSerie());
 			//
-			pilaVacia.signalAll();
+			pilaLlena.signalAll();
 			//Si coloco la expresion "return x" dentro del bloque try se sigue ejecutando el bloque finally?
 			return plato;
 		} finally {
@@ -64,7 +64,7 @@ public class Pila {
 			//Se muestra un mensaje por pantalla
 			System.out.printf("Hora %s: %s ha colocado el plato #%d......\n", LocalDateTime.now().format(formatoHora).toString(), Thread.currentThread().getName(), plato.getNumSerie());
 			//
-			pilaLlena.signalAll();
+			pilaVacia.signalAll();
 		} finally {
 			//
 			cerrojo.unlock();
