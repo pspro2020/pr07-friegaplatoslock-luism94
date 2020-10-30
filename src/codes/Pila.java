@@ -47,8 +47,8 @@ public class Pila {
 			plato = pila_sucios.removeFirst();
 			//Se muestra un mensaje por pantalla
 			System.out.printf("Hora %s: %s ha recogido el plato #%d de la pila......\n", LocalDateTime.now().format(formatoHora).toString(), Thread.currentThread().getName(), plato.getNumSerie());
-			//Se avisa a los demas hilos de que pueden continuar
-			pilaVacia.signalAll();
+			//
+			pilaLlena.signalAll();
 			//Si coloco la expresion "return x" dentro del bloque try se sigue ejecutando el bloque finally?
 			return plato;
 		} finally {
@@ -72,8 +72,8 @@ public class Pila {
 			pila_limpios.add(plato);
 			//Se muestra un mensaje por pantalla
 			System.out.printf("Hora %s: %s ha colocado el plato #%d......\n", LocalDateTime.now().format(formatoHora).toString(), Thread.currentThread().getName(), plato.getNumSerie());
-			//Se avisa a los demas hilos de que pueden continuar
-			pilaLlena.signalAll();
+			//
+			pilaVacia.signalAll();
 		} finally {
 			//Quito el cerrojo para que pase el siguiente hilo
 			cerrojo.unlock();
